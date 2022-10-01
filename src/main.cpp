@@ -1,15 +1,42 @@
 #include <iostream>
 
+#include "cxxopts.hpp"
+
 #include <chip8.h>
 
 #define CHIP_SPEED    500/60
 #define SCALE_FACTOR  20
 
-int main () {
-  Chip8 chip;
+auto main (int argc, char **argv) noexcept -> int {
+  cxxopts::Options options ("Chip-8", "A quick Chip-8 implementation to test out emulator "
+                                      "development.");
 
+  options.add_options ()
+      ("i,input", "The file containing the Chip-8 instructions.", cxxopts::value<std::string> ());
+
+  options.custom_help ("[options]");
+  options.parse_positional ({"input"});
+  options.positional_help ("<input>");
+
+  cxxopts::ParseResult result;
+  try {
+    result = options.parse (argc, argv);
+  }
+  catch (...) {
+    std::cout << options.help () << std::endl;
+    exit (0);
+  }
+
+  if (result.count ("help") || !result.count ("input")) {
+    std::cout << options.help () << std::endl;
+    exit (0);
+  }
+
+  Chip8 chip;
   chip.initialize ();
-  chip.load_game ("../resources/roms/games/Pong [Paul Vervalin, 1990].ch8");
+
+  auto input_path = result["input"].as<std::string> ();
+  chip.load_game (input_path);
 
   chip.initialize_display (SCALE_FACTOR);
 

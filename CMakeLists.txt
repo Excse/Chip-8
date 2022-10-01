@@ -11,7 +11,7 @@ project(${PROJECT_NAME})
 ########################################
 # Set up the compiler flags
 ########################################
-set(CMAKE_CXX_FLAGS "-pedantic -Wall -Werror -Wshadow -Wsign-conversion -std=c++23")
+set(CMAKE_CXX_FLAGS "-pedantic -Wall -Werror -Wshadow -std=c++23")
 set(CMAKE_CXX_STANDARD 23)
 
 ########################################
@@ -34,6 +34,9 @@ include(FindPkgConfig)
 
 pkg_search_module(SDL2 REQUIRED sdl2)
 include_directories(${SDL2_INCLUDE_DIRS})
+
+add_subdirectory(./libs/cxxopts)
+include_directories(${cxxopts_SOURCE_DIR}/include)
 
 ########################################
 # Compile source files into a library

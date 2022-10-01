@@ -38,6 +38,11 @@ void Chip8::initialize () {
 
 void Chip8::load_game (const std::string &path) {
   std::ifstream game_file (path, std::ios::in | std::ios::binary);
+  if (!game_file.good ()) {
+    std::cerr << "Couldn't open the file " << path << std::endl;
+    exit (1);
+  }
+
   for (size_t index = MEMORY_PROGRAM_START; game_file.good (); index++) {
     this->memory_[index] = game_file.get ();
   }

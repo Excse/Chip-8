@@ -75,6 +75,12 @@ class Chip8 {
    */
   void initialize ();
 
+  /**
+   * Initializes the SDL window and renderer. The scaling factor is needed to compute the real
+   * size of the window.
+   *
+   * @param scaling_factor The factor used by which the pixels are getting scaled.
+   */
   void initialize_display (uint8_t scaling_factor);
 
   /**
